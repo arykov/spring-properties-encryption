@@ -1,0 +1,12 @@
+<aspectj>
+	<!-- weaver options="-verbose -showWeaveInfo"-->
+	<weaver>
+		<include within="org.springframework..*" />
+		<include within="com.ryaltech..*" />
+	</weaver>
+
+	<aspects>
+		<aspect
+			name="com.ryaltech.github.security.PropertySourceInterceptor" />
+	</aspects>
+</aspectj>
