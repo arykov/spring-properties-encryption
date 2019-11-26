@@ -2,21 +2,29 @@ spring:
     profiles: test
     password: mypassword
     value: |
+           hello|
+           bye
+    struct:
+      - password:
+          - passwordx
+          - passwordy
+      - pass:
+          - passwordx
+          - passwordy
+      
     
 name: test-YAML
 environment: test
 servers: 
+  - www.abc.test.com
+  - www.xyz.test.com
  
-    - www.abc.test.com
- 
-    - www.xyz.test.com
- 
-#---
-#spring:
-#    profiles: prod
-#    password: mypassword1
-#name: prod-YAML
-#environment: production
-#servers: 
-#    - www.abc.com
-#    - www.xyz.com
+---
+spring:
+    profiles: prod
+    password: mypassword1
+name: prod-YAML
+environment: production
+servers: 
+    - www.abc.com
+    - www.xyz.com

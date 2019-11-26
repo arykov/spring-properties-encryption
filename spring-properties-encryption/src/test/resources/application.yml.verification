@@ -1,0 +1,27 @@
+spring:
+    profiles: test
+    password: ENC(e4960b591658fb01c025cf5b5dd4e2f261ea59ef432c29999fe19c724fb12a51)
+    value: |
+        hello|
+        bye
+    struct:
+      - password:
+          - ENC(241b922b8b80aa00247fd7295b26ab620723ff390d3477fa7da7066f8104d9f6)
+          - ENC(5cd2f0fb243da5f5d029b7ce2ee07cad84da59f3210da995954802cf986855f1)
+      - pass:
+          - passwordx
+          - passwordy
+name: test-YAML
+environment: test
+servers:
+  - www.abc.test.com
+  - www.xyz.test.com
+---
+spring:
+    profiles: prod
+    password: ENC(e31a30cd5472f02db1b7f47d0b6c19d1ae37678eadc65c9bb979c000eaea1148)
+name: prod-YAML
+environment: production
+servers:
+  - www.abc.com
+  - www.xyz.com

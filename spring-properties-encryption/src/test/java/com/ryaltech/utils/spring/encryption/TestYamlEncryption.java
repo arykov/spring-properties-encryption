@@ -1,41 +1,44 @@
 package com.ryaltech.utils.spring.encryption;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.ryaltech.github.security.ConfigFileEncryptor;
-import com.ryaltech.github.security.Encryptor;
-
-
 public class TestYamlEncryption {
+	public static String YML_FILE_NAME = "application.yml";
+
+	public static String YML_FILE_NAME_SOURCE = YML_FILE_NAME+".source";
+	public static String YML_FILE_NAME_VERIFICATION = YML_FILE_NAME+".verification";
 	@BeforeClass
 	public static void init() throws Exception {
-		new File("sys.dat").delete();
-		new File("application1.yml").delete();
-		;
-		Files.copy(Paths.get(ClassLoader.getSystemResource("application.yml.source").toURI()), Paths.get("application1.yml"));
+		new File("syskey.dat").delete();
+		new File(YML_FILE_NAME).delete();
+		
+		Files.copy(Paths.get(ClassLoader.getSystemResource(YML_FILE_NAME_SOURCE).toURI()), Paths.get(YML_FILE_NAME));
 	}
 
 	@Test
-	public void testAppWithProperties() throws FileNotFoundException, IOException {
-		Encryptor encryptor = new Encryptor();		
-		new ConfigFileEncryptor(encryptor).encryptConfigFile("application1.yml");
+	public void testAppWithProperties() throws Exception{
 		
-		/*
-		try (FileInputStream fis = new FileInputStream("application1.yaml")) {
-			props.load(fis);
-		}
-		*/
-		//assertTrue(props.getProperty("password").startsWith("ENC("));
-
+		Encryptor encryptor = new Encryptor();
+		new YamlFileEncryptor(encryptor).encryptConfigFile(YML_FILE_NAME);
+		assertTrue("syskey.dat file did not get created", new File("syskey.dat").exists());
+		
+		String actualContents = new String ( Files.readAllBytes( Paths.get(YML_FILE_NAME) ) );
+		String expectedContents = new String ( Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(YML_FILE_NAME_VERIFICATION).toURI() )) );
+		assertEquals(expectedContents.replaceAll("ENC\\(\\w*\\)", "ENC()"), actualContents.replaceAll("ENC\\(\\w*\\)", "ENC()"));
+		
 	}
 
+	@Test
+	public void rerunTest() throws Exception{
+		testAppWithProperties();
+	}
 
 }

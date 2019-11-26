@@ -13,14 +13,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-configuration2</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
@@ -29,6 +24,17 @@
 			<version>1.23</version>
 		</dependency>
 
+
+
+		<!-- License for this dependency is GPLv2 + Classpath Exception IANAL, 
+			but my interpretation based on reading the license as well as: https://resources.whitesourcesoftware.com/blog-whitesource/top-9-gpl-with-the-classpath-exception-questions-answered 
+			does not affect the license of this software even if we were to shade/statically 
+			link -->
+		<dependency>
+			<groupId>org.fedorahosted.openprops</groupId>
+			<artifactId>openprops</artifactId>
+			<version>0.8.5</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>

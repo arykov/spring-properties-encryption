@@ -2,11 +2,11 @@
 	<!-- weaver options="-verbose -showWeaveInfo"-->
 	<weaver>
 		<include within="org.springframework..*" />
-		<include within="com.ryaltech..*" />
+		<include within="com.ryaltech.utils.spring.encryption.*" />
 	</weaver>
 
 	<aspects>
 		<aspect
-			name="com.ryaltech.github.security.PropertySourceInterceptor" />
+			name="com.ryaltech.utils.spring.encryption.PropertySourceInterceptor" />
 	</aspects>
 </aspectj>

@@ -1,5 +1,6 @@
 package com.ryaltech.utils.spring.encryption;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -11,31 +12,32 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.ryaltech.github.security.ConfigFileEncryptor;
-import com.ryaltech.github.security.Encryptor;
+import com.ryaltech.utils.spring.encryption.Encryptor;
+import com.ryaltech.utils.spring.encryption.PropertiesFileEncryptor;
 
 public class TestPropertiesEncryption {
+	private static final String PROPERTIES_FILE_NAME =  "application.properties";
+	private static final String PROPERTIES_FILE_NAME_SOURCE =  "application.properties.source";
 	@BeforeClass
 	public static void init() throws Exception {
-		new File("sys.dat").delete();
-		new File("application1.properties").delete();
+		new File("syskey.dat").delete();
+		new File(PROPERTIES_FILE_NAME).delete();
 		
-		Files.copy(Paths.get(ClassLoader.getSystemResource("application.properties.source").toURI()), Paths.get("application1.properties"));
+		Files.copy(Paths.get(ClassLoader.getSystemResource(PROPERTIES_FILE_NAME_SOURCE).toURI()), Paths.get(PROPERTIES_FILE_NAME));
 	}
 
 	@Test
 	public void testAppWithProperties() throws FileNotFoundException, IOException {
 		Encryptor encryptor = new Encryptor();
-		new ConfigFileEncryptor(encryptor).encryptConfigFile("application1.properties");
+		new PropertiesFileEncryptor(encryptor).encryptConfigFile(PROPERTIES_FILE_NAME);
 		Properties props = new Properties();
-		try (FileInputStream fis = new FileInputStream("application1.properties")) {
+		try (FileInputStream fis = new FileInputStream(PROPERTIES_FILE_NAME)) {
 			props.load(fis);
 		}
 		assertTrue(props.getProperty("password").startsWith("ENC("));
-
+		assertEquals("password", encryptor.decrypt(props.getProperty("password")));
 	}
 
 	@Test

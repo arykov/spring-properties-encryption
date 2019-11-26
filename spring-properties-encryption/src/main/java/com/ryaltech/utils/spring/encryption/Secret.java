@@ -1,4 +1,4 @@
-package com.ryaltech.github.security;
+package com.ryaltech.utils.spring.encryption;
 
 import java.io.File;
 import java.io.FileInputStream;

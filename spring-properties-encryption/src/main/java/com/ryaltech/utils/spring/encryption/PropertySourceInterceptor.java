@@ -1,4 +1,4 @@
-package com.ryaltech.github.security;
+package com.ryaltech.utils.spring.encryption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public class PropertySourceInterceptor {
 	private static Log logger = LogFactory.getLog(Encryptor.class);
 	private List<String> processedNames = new ArrayList<>();
 	private Encryptor encryptor = new Encryptor();
-	private ConfigFileEncryptor configFileEncryptor = new ConfigFileEncryptor(encryptor);
+	private FileEncryptor configFileEncryptor = new AllFilesEncryptor(encryptor);
 	private Pattern sourceNamePattern = Pattern.compile(".*\\[file:(.*)\\]");
 	private final boolean disableFileUpdate;
 
