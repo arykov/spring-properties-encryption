@@ -1,12 +1,18 @@
 package com.ryaltech.utils.spring.encryption;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -31,13 +37,17 @@ class Secret {
 	 * @param data
 	 * @throws Exception
 	 */
-	private final void save(File f) {
+	private final byte[] toBytes() {
 		assert salt != null && password != null : "salt and or password are not properly initialized";
 
-		try ( 	FileOutputStream fos = new FileOutputStream(f);				
-				ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+		// not doing close to avoid closing underlying stream
+
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
 			oos.writeObject(salt);
 			oos.writeObject(password);
+			oos.flush();
+			return baos.toByteArray();
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -52,34 +62,69 @@ class Secret {
 	 */
 	private final void read(File f) {
 		try (FileInputStream fis = new FileInputStream(f); ObjectInputStream ois = new ObjectInputStream(fis)) {
-			salt = (char[]) ois.readObject();
-			password = (char[]) ois.readObject();
+			read(ois);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
-	
-	Secret() {
-		keyFile = new File(System.getProperties().getProperty("enc.sysKeyFile", "syskey.dat"));
-		try {
-			if (!keyFile.exists()) {
-				salt = Hex.encode(KeyGenerators.secureRandom(16).generateKey());
-				password = Hex.encode(KeyGenerators.secureRandom(64).generateKey());
-				save(keyFile);
-			}
-			if (!FileSystems.getDefault().supportedFileAttributeViews().contains("posix")) {
-				logger.error(
-						"Failed to make sys.dat is readable only by owner(400). Please, make sure it is done manually.");
-			} else {
-				Files.setPosixFilePermissions(keyFile.toPath(), Collections.singleton(PosixFilePermission.OWNER_READ));
-			}
-
-		} catch (IOException ex) {
-			throw new RuntimeException("sys.dat should have permissions to read for the owner only(400)", ex);
-
-		}
-		read(keyFile);
+	private final void read(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		salt = (char[]) ois.readObject();
+		password = (char[]) ois.readObject();
 	}
 
+	Secret() {
+		this(false);
+	}
+
+	Secret(boolean createKeyIfNeeded) {
+		keyFile = new File(System.getProperties().getProperty("enc.sysKeyFile", "syskey.dat"));
+		if (createKeyIfNeeded) {
+			//50 seconds is a bit excessive
+			for (int i = 0; i < 1000; i++) {
+				try (RandomAccessFile raf = new RandomAccessFile(keyFile, "rw");
+						FileChannel channel = raf.getChannel();
+						InputStream is = Channels.newInputStream(channel);
+						OutputStream os = Channels.newOutputStream(channel)) {
+					// TODO: currently if multiple instances of this are used in the VM and one
+					// tries to acquire lock at the same time it will cause the second instance to
+					// fail
+					FileLock lock = channel.tryLock();
+					if (lock != null) {
+						// Both writing and reading is done through a buffer to avoid the problem when
+						// closing streams causes underlying streams to be closed. The alternative of
+						// keeping them open is not appealing. Better solution?
+						try {
+							// counting on normal size files produced by us
+							byte[] fileContents = new byte[(int) keyFile.length()];
+							is.read(fileContents);
+							try (ByteArrayInputStream bais = new ByteArrayInputStream(fileContents);
+									ObjectInputStream ois = new ObjectInputStream(bais)) {
+								read(ois);
+							}
+						} catch (Exception ex) {
+							logger.debug(ex);
+							salt = Hex.encode(KeyGenerators.secureRandom(16).generateKey());
+							password = Hex.encode(KeyGenerators.secureRandom(64).generateKey());
+							os.write(toBytes());
+						} finally {
+							lock.release();
+						}
+						return;
+					}
+					if(i%100 == 0 && i>0) {
+						logger.warn("Lock is being held excessively long ... Seconds waiting: "+(500)*i/1000);						
+					}
+					Thread.sleep(50);
+					
+				} catch (IOException | InterruptedException ex) {
+					logger.error("exception", ex);
+					throw new RuntimeException(ex);
+				}
+			}
+
+		} else {
+			read(keyFile);
+		}
+	}
 }

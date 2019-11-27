@@ -1,7 +1,5 @@
 package com.ryaltech.utils.spring.encryption;
 
-
-
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,11 +15,13 @@ import com.ryaltech.org.springframework.security.crypto.encrypt.Encryptors;
  * @author rykov
  *
  */
-public class Encryptor {		
+public class Encryptor {
 	private Pattern encodedPattern = Pattern.compile("ENC\\((.*)\\)");
 
-	
 	public Encryptor() {
+		// Create and throw away to make sure key is created
+		// TODO: if we are not encrypting key is available. This can be skipped
+		new Secret(true);
 		try {
 			if (Cipher.getMaxAllowedKeyLength("AES") < Integer.MAX_VALUE) {
 				throw new RuntimeException("JCE Unlimited Strength not installed. ");
@@ -41,8 +41,9 @@ public class Encryptor {
 		// avoid double encryption
 		if (!isEncrypted(stringToEncrypt)) {
 			Secret s = new Secret();
-			return String.format("ENC(%s)", Encryptors.text(new String(s.password), new String(s.salt)).encrypt(stringToEncrypt));			
-			
+			return String.format("ENC(%s)",
+					Encryptors.text(new String(s.password), new String(s.salt)).encrypt(stringToEncrypt));
+
 		} else {
 			return stringToEncrypt;
 		}
@@ -54,7 +55,7 @@ public class Encryptor {
 		Matcher matcher = encodedPattern.matcher(stringToDecrypt);
 		if (matcher.matches()) {
 			Secret s = new Secret();
-			return Encryptors.text(new String(s.password), new String(s.salt)).decrypt(matcher.group(1));			
+			return Encryptors.text(new String(s.password), new String(s.salt)).decrypt(matcher.group(1));
 		} else {
 			return stringToDecrypt;
 		}
