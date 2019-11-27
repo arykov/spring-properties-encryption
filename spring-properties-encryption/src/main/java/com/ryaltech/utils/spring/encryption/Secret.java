@@ -76,12 +76,15 @@ class Secret {
 	Secret() {
 		this(false);
 	}
+	
+	private static final long SLEEP_BETWEEN_LOCK_ATTEMPTS = 50;
+	private static final int LOCK_ATTEMPTS = 1000;
 
 	Secret(boolean createKeyIfNeeded) {
 		keyFile = new File(System.getProperties().getProperty("enc.sysKeyFile", "syskey.dat"));
 		if (createKeyIfNeeded) {
 			//50 seconds is a bit excessive
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < LOCK_ATTEMPTS; i++) {
 				try (RandomAccessFile raf = new RandomAccessFile(keyFile, "rw");
 						FileChannel channel = raf.getChannel();
 						InputStream is = Channels.newInputStream(channel);
@@ -112,10 +115,10 @@ class Secret {
 						}
 						return;
 					}
-					if(i%100 == 0 && i>0) {
-						logger.warn("Lock is being held excessively long ... Seconds waiting: "+(500)*i/1000);						
+					if(i%(LOCK_ATTEMPTS/10) == 0 && i>0) {
+						logger.warn("Lock is being held excessively long ... Seconds waiting: "+i*SLEEP_BETWEEN_LOCK_ATTEMPTS/1000);						
 					}
-					Thread.sleep(50);
+					Thread.sleep(SLEEP_BETWEEN_LOCK_ATTEMPTS);
 					
 				} catch (IOException | InterruptedException ex) {
 					logger.error("exception", ex);
