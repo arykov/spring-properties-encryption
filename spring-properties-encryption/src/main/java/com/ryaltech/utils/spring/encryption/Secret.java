@@ -110,6 +110,13 @@ class Secret {
 							salt = Hex.encode(KeyGenerators.secureRandom(16).generateKey());
 							password = Hex.encode(KeyGenerators.secureRandom(64).generateKey());
 							os.write(toBytes());
+							if (!FileSystems.getDefault().supportedFileAttributeViews().contains("posix")) {
+								logger.error(
+										"Failed to make "+keyFile.getName()+" readable only by owner(400). Please, make sure it is done manually.");
+							} else {
+								Files.setPosixFilePermissions(keyFile.toPath(), Collections.singleton(PosixFilePermission.OWNER_READ));
+							}
+
 						} finally {
 							lock.release();
 						}
