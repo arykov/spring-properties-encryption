@@ -18,6 +18,14 @@
 			<artifactId>spring-properties-encryption</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>spring-properties-encryption</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,6 +52,7 @@
 					</argLine>
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<forkMode>always</forkMode>
+					<parallel>false</parallel>
 				</configuration>
 			</plugin>
 		</plugins>

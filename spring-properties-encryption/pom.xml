@@ -61,16 +61,16 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
-						<configuration>							
+						<configuration>
 							<relocations combine.children="append">
 								<!-- explicit to avoid org.fedorahosted -->
 								<relocation>
 									<pattern>org.apache</pattern>
-									<shadedPattern>com.ryaltech.org.apache</shadedPattern>									
+									<shadedPattern>com.ryaltech.org.apache</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>org.yaml</pattern>
-									<shadedPattern>com.ryaltech.org.yaml</shadedPattern>									
+									<shadedPattern>com.ryaltech.org.yaml</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
@@ -97,6 +97,18 @@
 						<phase>clean</phase>
 						<goals>
 							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
 						</goals>
 					</execution>
 				</executions>

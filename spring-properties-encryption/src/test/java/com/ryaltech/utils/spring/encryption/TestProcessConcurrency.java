@@ -13,19 +13,20 @@ import java.nio.channels.FileLock;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestConcurrency {
+public class TestProcessConcurrency extends BaseTest{
 	@Before
 	public void setUp() {
-		new File("syskey.dat").delete();
+		deleteKeyFile();
 	}
 
 	@Test
-	public void shouldRunAJvm() throws Exception {
+	public void testLockAndRnJvm() throws Exception {
 		Process process = null;
-		try (RandomAccessFile raf = new RandomAccessFile("syskey.dat", "rw"); FileChannel fc = raf.getChannel()) {
+		try (RandomAccessFile raf = new RandomAccessFile(KEY_FILE, "rw"); FileChannel fc = raf.getChannel()) {
 			try (FileLock fl = fc.tryLock()) {
 				assertNotNull(fl);
 				String classpath = Arrays
@@ -49,6 +50,7 @@ public class TestConcurrency {
 	}
 
 	public static void main(String[] args) {
+		LogFactory.getLog(TestProcessConcurrency.class).debug("starting competing process");
 		Encryptor encryptor = new Encryptor();
 		System.out.println(encryptor.encrypt("no matter"));
 	}

@@ -1,3 +1,4 @@
 *.dat
 *.yml
 *.properties
+!logging.properties
