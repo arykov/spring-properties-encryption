@@ -29,7 +29,8 @@
 		<!-- License for this dependency is GPLv2 + Classpath Exception IANAL, 
 			but my interpretation based on reading the license as well as: https://resources.whitesourcesoftware.com/blog-whitesource/top-9-gpl-with-the-classpath-exception-questions-answered 
 			does not affect the license of this software even if we were to shade/statically 
-			link -->
+			link Using it to preserve comments in property files. If you are concerned, 
+			switch to using regualr properties class or commons config from apache -->
 		<dependency>
 			<groupId>org.fedorahosted.openprops</groupId>
 			<artifactId>openprops</artifactId>
@@ -51,13 +52,37 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>							
+							<relocations combine.children="append">
+								<!-- explicit to avoid org.fedorahosted -->
+								<relocation>
+									<pattern>org.apache</pattern>
+									<shadedPattern>com.ryaltech.org.apache</shadedPattern>									
+								</relocation>
+								<relocation>
+									<pattern>org.yaml</pattern>
+									<shadedPattern>com.ryaltech.org.yaml</shadedPattern>									
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
 				<version>1.1.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
-
-
 				</configuration>
 				<executions>
 					<execution>
