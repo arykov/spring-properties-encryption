@@ -39,7 +39,7 @@ public class TestThreadConcurrency extends BaseTest implements UncaughtException
 				}
 				
 				System.out.println("Starting long process ...");
-				for(int i=0;i<50;i++) {
+				for(int i=0;i<21;i++) {
 					Thread.sleep(500);
 					System.out.println("Cycle: "+i);
 

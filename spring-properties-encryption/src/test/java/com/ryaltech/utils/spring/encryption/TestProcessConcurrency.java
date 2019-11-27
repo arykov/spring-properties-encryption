@@ -36,7 +36,7 @@ public class TestProcessConcurrency extends BaseTest{
 				process = new ProcessBuilder(System.getProperty("java.home") + "/bin/java", "-classpath",
 						classpath, this.getClass().getName()).inheritIO().start();
 				System.out.println("Starting long process ...");
-				for(int i=0;i<50;i++) {
+				for(int i=0;i<21;i++) {
 					Thread.sleep(500);
 					System.out.println("Cycle: "+i);
 					assertTrue(process.isAlive());
