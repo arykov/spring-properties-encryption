@@ -20,6 +20,7 @@
 	<modules>
 		<module>spring-properties-encryption</module>
 		<module>spring-properties-encryption-tests</module>
+		<module>sample-app</module>
 	</modules>
 	<build>
 		<plugins>

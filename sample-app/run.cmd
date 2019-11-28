@@ -1,0 +1,1 @@
+java -javaagent:lib/aspectjweaver-1.9.4.jar -classpath ..\spring-properties-encryption\target\spring-properties-encryption-0.0.1-SNAPSHOT.jar;target/sample-app-0.0.1-SNAPSHOT.jar org.springframework.boot.loader.JarLauncher
