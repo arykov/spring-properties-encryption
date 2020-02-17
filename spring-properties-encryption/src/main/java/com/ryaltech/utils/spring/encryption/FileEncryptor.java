@@ -14,21 +14,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class FileEncryptor {
-	private static final Log logger = LogFactory.getLog(FileEncryptor.class);
-	private static final Pattern[] defaultPatterns = { Pattern.compile(".*password[^a-z]*", Pattern.CASE_INSENSITIVE) };
-	private Pattern[] patterns = defaultPatterns;
+	private static final Log logger = LogFactory.getLog(FileEncryptor.class);	
+	//patterns to include when encrypting
+	private Pattern[] patterns;
+	//patterns to exclude. They take precedent
+	private Pattern[] excludePatterns = {};
 	private Encryptor encryptor;
 
-	public FileEncryptor(Encryptor encryptor, Pattern... propertyNamePattern) {
+	public FileEncryptor(Encryptor encryptor, Pattern [] includePatterns, Pattern [] excludePatterns) {
 		this.encryptor = encryptor;
-		if (propertyNamePattern.length > 0)
-			this.patterns = propertyNamePattern;
+		this.excludePatterns = excludePatterns;
+		this.patterns = includePatterns;
+		
 	}
+	
 
 	boolean shouldEncrypt(String key) {
 		for (Pattern p : patterns) {
 			Matcher m = p.matcher(key);
 			if (m.matches()) {
+				for(Pattern ep: excludePatterns) {
+					m = ep.matcher(key);
+					if(m.matches())return false;
+				}
 				return true;
 			}
 		}

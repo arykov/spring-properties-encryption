@@ -20,9 +20,10 @@ public class TestPropertiesEncryption extends BaseTest{
 	}
 	@Test
 	public void testAppWithProperties() throws FileNotFoundException, IOException {
-		Encryptor encryptor = new Encryptor();
+		Encryptor encryptor = new Encryptor(new File("syskey.dat"));
 		assertTrue(KEY_FILE+" did not get created", new File(KEY_FILE).exists());
-		new PropertiesFileEncryptor(encryptor).encryptConfigFile(PROPERTIES_FILE_NAME);
+		EncryptionConfig ec = new EncryptionConfig();
+		new PropertiesFileEncryptor(new Encryptor(ec.getKeyFile()), ec.getIncludePatterns(), ec.getExcludePatterns()).encryptConfigFile(PROPERTIES_FILE_NAME);
 		Properties props = new Properties();
 		try (FileInputStream fis = new FileInputStream(PROPERTIES_FILE_NAME)) {
 			props.load(fis);

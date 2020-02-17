@@ -16,8 +16,8 @@ import org.aspectj.lang.annotation.Before;
 public class PropertySourceInterceptor {
 	private static Log logger = LogFactory.getLog(Encryptor.class);
 	private List<String> processedNames = new ArrayList<>();
-	private Encryptor encryptor = new Encryptor();
-	private FileEncryptor configFileEncryptor = new AllFilesEncryptor(encryptor);
+	private Encryptor encryptor;
+	private FileEncryptor configFileEncryptor;
 	private Pattern sourceNamePattern = Pattern.compile(".*\\[file:(.*)\\]");
 	private final boolean disableFileUpdate;
 
@@ -46,9 +46,12 @@ public class PropertySourceInterceptor {
 
 	}
 	
-	public PropertySourceInterceptor() {
-		disableFileUpdate = "false".equalsIgnoreCase(System.getProperty("enc.disableFileUpdate"));
+	public PropertySourceInterceptor() {		
+		EncryptionConfig config = new EncryptionConfig();		
+		disableFileUpdate = config.isReadOnly();
+		encryptor = new Encryptor(config.getKeyFile());
 		
+		configFileEncryptor = new AllFilesEncryptor(encryptor, config.getIncludePatterns(), config.getExcludePatterns());		
 	}
 	
 

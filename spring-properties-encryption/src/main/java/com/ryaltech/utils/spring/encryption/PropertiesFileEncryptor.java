@@ -8,8 +8,8 @@ import org.fedorahosted.openprops.Properties;
 
 public class PropertiesFileEncryptor extends FileEncryptor {
 
-	public PropertiesFileEncryptor(Encryptor encryptor, Pattern... propertyNamePattern) {
-		super(encryptor, propertyNamePattern);
+	public PropertiesFileEncryptor(Encryptor encryptor, Pattern[] includePatterns, Pattern[] excludePatterns) {
+		super(encryptor, includePatterns, excludePatterns);
 	}
 	
 	

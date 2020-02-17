@@ -1,22 +1,15 @@
 package com.ryaltech.utils.spring.encryption;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
-import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,7 +56,7 @@ public class TestThreadConcurrency extends BaseTest implements UncaughtException
 		}
 		assertNoThreadException();
 		assertTrue("thread should still be alive", th.isAlive());			
-		System.out.println(new Encryptor().encrypt("lalala"));
+		System.out.println(new Encryptor(new File("syskey.dat")).encrypt("lalala"));
 		assertNoThreadException();
 		assertFalse("thread should have finished by now alive", th.isAlive());
 

@@ -25,8 +25,7 @@ import com.ryaltech.org.springframework.security.crypto.codec.Hex;
 import com.ryaltech.org.springframework.security.crypto.keygen.KeyGenerators;
 
 class Secret {
-	private static Log logger = LogFactory.getLog(Secret.class);
-	private final File keyFile;;
+	private static Log logger = LogFactory.getLog(Secret.class);	
 	char[] salt, password;
 
 	/**
@@ -72,16 +71,11 @@ class Secret {
 		password = (char[]) ois.readObject();
 	}
 
-	Secret() {
-		this(false);
-	}
-
 	// TODO: Is 50 seconds a bit excessive?
 	private static final long SLEEP_BETWEEN_LOCK_ATTEMPTS = 50;
 	private static final int LOCK_ATTEMPTS = 1000;
 
-	Secret(boolean createKeyIfNeeded) {
-		keyFile = new File(System.getProperties().getProperty("enc.sysKeyFile", "syskey.dat"));
+	Secret(File keyFile, boolean createKeyIfNeeded) {		
 		if (createKeyIfNeeded) {
 
 			for (int i = 0; i < LOCK_ATTEMPTS; i++) {
