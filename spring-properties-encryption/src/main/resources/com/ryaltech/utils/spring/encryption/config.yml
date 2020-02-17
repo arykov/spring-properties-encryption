@@ -1,0 +1,11 @@
+#indicates whether on the fly encryption should be occurring
+readOnly: false
+#if readOnly is false
+#patterns for properties to be encrypted
+includePatterns:
+    - .*password[^a-z]*
+    - .*passphrase[^a-z]*
+#patterns of properties that should be skipped even if includPatterns are met
+excludePatterns:
+#file to keep encryption key in
+keyFileName: syskey.dat

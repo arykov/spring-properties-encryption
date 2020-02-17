@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.ryaltech.utils</groupId>
+		<groupId>com.ryaltech.utils.spring.encryption</groupId>
 		<artifactId>spring-encryption</artifactId>
 		<version>${revision}</version>
 	</parent>
@@ -47,8 +47,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.10</version>
 				<configuration>
-					<argLine>
-						-javaagent:"${settings.localRepository}"/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+					<argLine>-javaagent:"${settings.localRepository}"/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
 					</argLine>
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<forkMode>always</forkMode>

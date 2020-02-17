@@ -51,7 +51,7 @@ public class TestProcessConcurrency extends BaseTest{
 
 	public static void main(String[] args) {
 		LogFactory.getLog(TestProcessConcurrency.class).debug("starting competing process");
-		Encryptor encryptor = new Encryptor();
+		Encryptor encryptor = new Encryptor(new File("syskey.dat"));
 		System.out.println(encryptor.encrypt("no matter"));
 	}
 

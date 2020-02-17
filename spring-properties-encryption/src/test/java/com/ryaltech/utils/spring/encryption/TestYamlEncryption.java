@@ -19,9 +19,9 @@ public class TestYamlEncryption extends BaseTest {
 
 	@Test
 	public void testAppWithProperties() throws Exception{
-		
-		Encryptor encryptor = new Encryptor();
-		new YamlFileEncryptor(encryptor).encryptConfigFile(YML_FILE_NAME);
+
+		EncryptionConfig ec = new EncryptionConfig();
+		new YamlFileEncryptor(new Encryptor(ec.getKeyFile()), ec.getIncludePatterns(), ec.getExcludePatterns()).encryptConfigFile(YML_FILE_NAME);
 		assertTrue(KEY_FILE+" did not get created", new File(KEY_FILE).exists());
 		
 		String actualContents = new String ( Files.readAllBytes( Paths.get(YML_FILE_NAME) ) );

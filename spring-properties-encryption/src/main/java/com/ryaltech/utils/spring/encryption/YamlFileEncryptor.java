@@ -12,8 +12,8 @@ import org.yaml.snakeyaml.Yaml;
 
 public class YamlFileEncryptor extends FileEncryptor {
 	private DumperOptions dumperOptions;
-	public YamlFileEncryptor(Encryptor encryptor, Pattern... propertyNamePattern) {
-		super(encryptor, propertyNamePattern);
+	public YamlFileEncryptor(Encryptor encryptor, Pattern[] includePatterns, Pattern[] excludePatterns) {
+		super(encryptor, includePatterns, excludePatterns);	
 		dumperOptions = new DumperOptions();
 		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		dumperOptions.setIndent(4);

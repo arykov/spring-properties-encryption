@@ -7,10 +7,10 @@ public class AllFilesEncryptor extends FileEncryptor {
 	private PropertiesFileEncryptor pfe;
 	private YamlFileEncryptor yfe;
 
-	public AllFilesEncryptor(Encryptor encryptor, Pattern... propertyNamePattern) {
-		super(encryptor, propertyNamePattern);
-		pfe = new PropertiesFileEncryptor(encryptor, propertyNamePattern);
-		yfe = new YamlFileEncryptor(encryptor, propertyNamePattern);
+	public AllFilesEncryptor(Encryptor encryptor, Pattern[] includePatterns, Pattern[] excludePatterns) {
+		super(encryptor, includePatterns, excludePatterns);
+		pfe = new PropertiesFileEncryptor(encryptor, includePatterns, excludePatterns);
+		yfe = new YamlFileEncryptor(encryptor, includePatterns, excludePatterns);
 	}
 
 	@Override
