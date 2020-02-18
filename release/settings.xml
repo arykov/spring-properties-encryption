@@ -1,0 +1,30 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+https://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<profiles>
+		<profile>
+			<id>central</id>
+			<properties>
+				<mvn_snapshots_repo_url>https://oss.sonatype.org/content/repositories/snapshots</mvn_snapshots_repo_url>
+				<mvn_snapshots_repo_id>mvn</mvn_snapshots_repo_id>
+				<mvn_releases_repo_url>https://oss.sonatype.org/service/local/staging/deploy/maven2</mvn_releases_repo_url>
+				<mvn_releases_repo_id>mvn</mvn_releases_repo_id>
+			</properties>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>central</activeProfile>
+	</activeProfiles>
+	<servers>
+		<server>
+			<id>mvn</id>
+			<!--Yoursonatypeusername-->
+			<username>${env.mvn_repo_user}</username>
+			<!--Yoursonatypepassword-->
+			<password>${env.mvn_repo_pass}</password>
+		</server>
+
+	</servers>
+
+</settings>
