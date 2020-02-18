@@ -64,5 +64,17 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<distributionManagement>
+		<repository>
+			<id>${mvn_releases_repo_id}</id>
+			<name>releases</name>
+			<url>${mvn_releases_repo_url}</url>
+		</repository>
+		<snapshotRepository>
+			<id>${mvn_snapshots_repo_id}</id>
+			<name>snapshots</name>
+			<url>${mvn_snapshots_repo_url}</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
