@@ -19,7 +19,8 @@
 
 	<modules>
 		<module>spring-properties-encryption</module>
-		<module>spring-properties-encryption-tests</module>
+		<module>spring-properties-encryption-aspects</module>
+		<module>spring-properties-encryption-aspects-tests</module>
 		<module>sample-app</module>
 	</modules>
 	<build>

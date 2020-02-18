@@ -5,8 +5,8 @@ set ASPECTJ_REVISION=1.9.4
 set ROOT_DIR=%~dp0
 set ORIGINAL_JAR=sample-app-%REVISION%.jar
 set AJCED_JAR_NAME=sample-app-ajc-%REVISION%.jar
-set ASPECT_JAR_NAME=spring-properties-encryption-%REVISION%.jar
-set ASPECT_JAR=%ROOT_DIR%\..\spring-properties-encryption\target\%ASPECT_JAR_NAME%
+set ASPECT_JAR_NAME=spring-properties-encryption-aspects-%REVISION%.jar
+set ASPECT_JAR=%ROOT_DIR%\..\spring-properties-encryption-aspects\target\%ASPECT_JAR_NAME%
 mkdir target\ajc
 copy target\%ORIGINAL_JAR% target\ajc
 pushd target\ajc

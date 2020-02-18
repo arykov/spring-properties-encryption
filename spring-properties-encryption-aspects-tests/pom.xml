@@ -9,13 +9,13 @@
 		<version>${revision}</version>
 	</parent>
 
-	<artifactId>spring-properties-encryption-tests</artifactId>
+	<artifactId>spring-properties-encryption-aspects-tests</artifactId>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>spring-properties-encryption</artifactId>
+			<artifactId>spring-properties-encryption-aspects</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
