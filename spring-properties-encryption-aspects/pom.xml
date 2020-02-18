@@ -10,6 +10,8 @@
 	</parent>
 
 	<artifactId>spring-properties-encryption-aspects</artifactId>
+	<name>${project.groupid}:${project.artifactid}</name>
+	<description>Aspects to be applied for property source encryption</description>
 
 	<dependencies>
 		<dependency>

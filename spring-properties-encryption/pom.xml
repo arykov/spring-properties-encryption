@@ -10,6 +10,9 @@
 	</parent>
 
 	<artifactId>spring-properties-encryption</artifactId>
+	<name>${project.groupid}:${project.artifactid}</name>
+	<description>Library containing encryption functionality</description>
+
 
 	<dependencies>
 		<dependency>
@@ -81,9 +84,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>				
-				<configuration>					
-					<flattenMode>fatjar</flattenMode>
-				</configuration>				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -8,7 +8,17 @@
 	<artifactId>spring-encryption</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-
+	<name>${project.groupid}:${project.artifactid}</name>
+	<description>Auto encryption and decryption of spring properties and yaml files</description>
+	<url>https://github.com/arykov/spring-properties-encryption</url>
+ 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -20,8 +30,7 @@
 	<modules>
 		<module>spring-properties-encryption</module>
 		<module>spring-properties-encryption-aspects</module>
-		<module>spring-properties-encryption-aspects-tests</module>
-		<module>sample-app</module>
+		<module>spring-properties-encryption-aspects-tests</module>		
 	</modules>
 	<build>
 		<pluginManagement>
@@ -32,6 +41,7 @@
 					<version>1.2.1</version>
 					<configuration>
 						<updatePomFile>true</updatePomFile>
+						<flattenMode>ossrh</flattenMode>
 					</configuration>
 					<executions>
 						<execution>
@@ -89,7 +99,17 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<scm>
+		<connection>scm:git:https://github.com/arykov/spring-properties-encryption.git</connection>
+		<developerConnection>scm:git:https://github.com/arykov/spring-properties-encryption.git</developerConnection>
+		<url>https://github.com/arykov/spring-properties-encryption</url>    
+	</scm>
+	<developers>
+		<developer>
+			<name>Ryaltech</name>
+			<email>inquiries@ryaltech.com</email>
+		</developer>
+  </developers>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -113,5 +133,84 @@
 			<url>${mvn_snapshots_repo_url}</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!publish</name>
+				</property>
+			</activation>
+			<modules>
+				<module>sample-app</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>release</id>
+				<activation>
+					<activeByDefault>false</activeByDefault>
+					<property>
+						<name>publish</name>
+					</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.8</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	
+	</profiles>
 
 </project>
