@@ -5,7 +5,7 @@ git clone git@github.com:arykov/spring-properties-encryption.git || goto :error
 set /p mvn_repo_user=maven central user:
 set /p mvn_repo_pass=maven central pass:
 cd spring-properties-encryption || goto :error
-call mvn -X -DskipTests deploy
+call mvn -Dpublish deploy
 cd ..
 echo "Success"
 exit 0

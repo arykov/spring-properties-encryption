@@ -30,8 +30,7 @@
 	<modules>
 		<module>spring-properties-encryption</module>
 		<module>spring-properties-encryption-aspects</module>
-		<module>spring-properties-encryption-aspects-tests</module>
-		<module>sample-app</module>
+		<module>spring-properties-encryption-aspects-tests</module>		
 	</modules>
 	<build>
 		<pluginManagement>
@@ -124,8 +123,26 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<profiles>
-			<profile>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!publish</name>
+				</property>
+			</activation>
+			<modules>
+				<module>sample-app</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>release</id>
+				<activation>
+					<activeByDefault>false</activeByDefault>
+					<property>
+						<name>publish</name>
+					</property>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
