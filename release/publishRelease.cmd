@@ -7,7 +7,7 @@ set /p mvn_repo_pass=maven central pass:
 set /p BUILD_NUMBER=revision:
 cd spring-properties-encryption || goto :error
 git tag -a "%BUILD_NUMBER%" -m "Jenkins released %BUILD_NUMBER%" || goto :error
-call mvn deploy -DskipTests -Drevision=%BUILD_NUMBER%|| goto :error
+call mvn deploy -Prelease -DskipTests -Drevision=%BUILD_NUMBER%|| goto :error
 git push origin "%BUILD_NUMBER%"
 cd ..
 echo "Success"
