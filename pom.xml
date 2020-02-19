@@ -8,7 +8,7 @@
 	<artifactId>spring-encryption</artifactId>
 	<version>${revision}</version>
 	<packaging>pom</packaging>
-	<name>spring-encryption</name>
+	<name>${project.groupid}:${project.artifactid}</name>
 	<description>Auto encryption and decryption of spring properties and yaml files</description>
 	<url>https://github.com/arykov/spring-properties-encryption</url>
  
@@ -41,6 +41,7 @@
 					<version>1.2.1</version>
 					<configuration>
 						<updatePomFile>true</updatePomFile>
+						<flattenMode>ossrh</flattenMode>
 					</configuration>
 					<executions>
 						<execution>
@@ -98,7 +99,17 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<scm>
+		<connection>scm:git:https://github.com/arykov/spring-properties-encryption.git</connection>
+		<developerConnection>scm:git:https://github.com/arykov/spring-properties-encryption.git</developerConnection>
+		<url>https://github.com/arykov/spring-properties-encryption</url>    
+	</scm>
+	<developers>
+		<developer>
+			<name>Ryaltech</name>
+			<email>inquiries@ryaltech.com</email>
+		</developer>
+  </developers>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
