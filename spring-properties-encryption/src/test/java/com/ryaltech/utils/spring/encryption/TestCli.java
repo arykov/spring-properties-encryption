@@ -62,7 +62,7 @@ public class TestCli extends BaseTest {
 		
 		String actualContents = new String ( Files.readAllBytes( destinationYmlFile.toPath() ) );
 		String expectedContents = new String ( Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(YML_FILE_NAME_VERIFICATION).toURI() )) );
-		assertEquals(expectedContents.replaceAll("ENC\\(\\w*\\)", "ENC()"), actualContents.replaceAll("ENC\\(\\w*\\)", "ENC()"));
+		assertEquals(expectedContents.replaceAll("ENC\\(\\w*\\)", "ENC()").replaceAll("\r", ""), actualContents.replaceAll("ENC\\(\\w*\\)", "ENC()").replaceAll("\r", ""));
 
 	}
 
