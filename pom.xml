@@ -24,11 +24,11 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<aspectj.version>1.9.4</aspectj.version>
-		<revision>0.0.1-SNAPSHOT</revision>
+		<revision>0.0.2-SNAPSHOT</revision>
 	</properties>
 
 	<modules>
-		<module>spring-properties-encryption</module>
+		<module>spring-properties-encryption</module>		
 		<module>spring-properties-encryption-aspects</module>
 		<module>spring-properties-encryption-aspects-tests</module>		
 	</modules>
