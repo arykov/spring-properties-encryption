@@ -13,7 +13,8 @@ public class PropertiesFileEncryptor extends FileEncryptor {
 	}
 	
 	
-	public void encryptConfigFile(String fileName) {
+	@Override
+	public void encryptConfigFile(String fileName){
 		Properties props = new Properties();
 		boolean modified = false;
 		try {

@@ -62,5 +62,5 @@ public abstract class FileEncryptor {
 		Files.move(tempFile.toPath(), dest.toPath(), ATOMIC_MOVE, REPLACE_EXISTING);
 	}
 
-	public abstract void encryptConfigFile(String fileName);
+	public abstract void encryptConfigFile(String fileName) throws UnsupportedFileException;
 }

@@ -14,13 +14,13 @@ public class AllFilesEncryptor extends FileEncryptor {
 	}
 
 	@Override
-	public void encryptConfigFile(String fileName) {
+	public void encryptConfigFile(String fileName)throws UnsupportedFileException{
 		if (fileName.endsWith(".properties"))
 			pfe.encryptConfigFile(fileName);
 		else if (fileName.endsWith(".yml"))
 			yfe.encryptConfigFile(fileName);
 		else
-			throw new RuntimeException(String.format("%s cannot be encrypted", fileName));
+			throw new UnsupportedFileException(String.format("%s cannot be encrypted", fileName));
 
 	}
 

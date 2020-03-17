@@ -19,7 +19,7 @@
 			<artifactId>spring-properties-encryption</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -30,7 +30,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -63,6 +63,20 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+
+				<configuration>
+					<archive>
+						<manifest>							
+							<mainClass>com.ryaltech.utils.spring.encryption.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>

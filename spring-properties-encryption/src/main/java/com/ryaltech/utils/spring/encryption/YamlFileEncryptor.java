@@ -22,6 +22,7 @@ public class YamlFileEncryptor extends FileEncryptor {
 
 	}
 
+	@Override
 	public void encryptConfigFile(String fileName) {
 		Yaml yaml = new Yaml(dumperOptions);
 		try {
