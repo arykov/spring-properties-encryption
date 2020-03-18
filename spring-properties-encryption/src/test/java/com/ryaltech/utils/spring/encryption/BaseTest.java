@@ -45,6 +45,33 @@ public class BaseTest {
 		new File(YML_FILE_NAME).delete();
 	}
 	
+	public static byte[] readFullyFromClassPath(String fromFile) {
+		FileSystem sourceFs = null;
+		try {
+			URI uri = ClassLoader.getSystemResource(fromFile).toURI();			
+			Path sourcePath;
+			if("jar".equals(uri.getScheme())) {
+				String[] array = uri.toString().split("!");
+				sourceFs = FileSystems.newFileSystem(URI.create(array[0]), new HashMap());
+				sourcePath = sourceFs.getPath(array[1]);
+			}else {
+				sourcePath = Paths.get(uri);
+			}
+			
+			return Files.readAllBytes(sourcePath);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}finally {
+			if(sourceFs != null) {
+				try {
+					sourceFs.close();
+				}catch(Exception ex) {
+					
+				}
+			}
+		}
+
+	}
 	public static void copyFromClassPathToFs(String fromFile, String toFile) {
 		FileSystem sourceFs = null;
 		try {

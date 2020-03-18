@@ -14,15 +14,15 @@ import org.apache.commons.logging.LogFactory;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * contains all configuration
- * reads it from contained config.yml
+ * contains all configuration from contained config.yml
+ * 
  * @author arykov
  *
  */
 public class EncryptionConfig {
 	private static final Log logger = LogFactory.getLog(EncryptionConfig.class);
 	private final String READ_ONLY_KEY = "readOnly", KEY_FILE_KEY = "keyFile", INCLUDE_PATTERNS_KEY = "includePatterns",
-			EXCLUDE_PATTERNS_KEY = "excludePatterns";	
+			EXCLUDE_PATTERNS_KEY = "excludePatterns";
 	private static final List<String> defaultPatterns = new ArrayList<String>() {
 		{
 			add(".*password[^a-z]*");
@@ -33,6 +33,7 @@ public class EncryptionConfig {
 	private Pattern[] includePatterns;
 	private Pattern[] excludePatterns;
 	private File keyFile;
+
 	public boolean isReadOnly() {
 		return readOnly;
 	}
@@ -58,15 +59,15 @@ public class EncryptionConfig {
 			logger.info(String.format("Reading config for %s", READ_ONLY_KEY));
 			readOnly = (Boolean) map.getOrDefault(READ_ONLY_KEY, false);
 			logger.info(String.format("Reading config for %s", INCLUDE_PATTERNS_KEY));
-			List<String>includPatternsStr = (List<String>)map.get(INCLUDE_PATTERNS_KEY);
-			includPatternsStr = includPatternsStr == null?Collections.EMPTY_LIST:includPatternsStr;
+			List<String> includPatternsStr = (List<String>) map.get(INCLUDE_PATTERNS_KEY);
+			includPatternsStr = includPatternsStr == null ? Collections.EMPTY_LIST : includPatternsStr;
 			includePatterns = toPatterns(includPatternsStr);
 			logger.info(String.format("Reading config for %s", EXCLUDE_PATTERNS_KEY));
-			List<String>excludPatternsStr = (List<String>)map.get(EXCLUDE_PATTERNS_KEY);
-			excludPatternsStr = excludPatternsStr == null?Collections.EMPTY_LIST:excludPatternsStr;
+			List<String> excludPatternsStr = (List<String>) map.get(EXCLUDE_PATTERNS_KEY);
+			excludPatternsStr = excludPatternsStr == null ? Collections.EMPTY_LIST : excludPatternsStr;
 			excludePatterns = toPatterns(excludPatternsStr);
-			keyFile = new File((String)map.getOrDefault(KEY_FILE_KEY, "syskey.dat"));
-			
+			keyFile = new File((String) map.getOrDefault(KEY_FILE_KEY, "syskey.dat"));
+
 		} catch (IOException ex) {
 			logger.error(ex);
 			throw new RuntimeException(ex);
