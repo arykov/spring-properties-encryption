@@ -46,11 +46,23 @@ public class PropertySourceInterceptor {
 
 	}
 	
+	/**
+	 * Checks if system key is enabled. If key is provided and not set to false(case
+	 * insensitive), true is returned. If key is set to case insensitive false,
+	 * false is returned. In all other cases defaultValue is returned.
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	static boolean getBooleanSystemProperty(String key, boolean defaultValue) {
+		return !System.getProperty(key, Boolean.toString(defaultValue)).equalsIgnoreCase(Boolean.FALSE.toString());
+	}
+
 	public PropertySourceInterceptor() {		
 		EncryptionConfig config = new EncryptionConfig();		
-		disableFileUpdate = config.isReadOnly();
-		encryptor = new Encryptor(config.getKeyFile());
-		
+		disableFileUpdate = getBooleanSystemProperty("com.ryaltech.utils.spring.encryption.disableAutoEncrypt", config.isReadOnly());
+		encryptor = new Encryptor(config.getKeyFile());		
 		configFileEncryptor = new AllFilesEncryptor(encryptor, config.getIncludePatterns(), config.getExcludePatterns());		
 	}
 	
