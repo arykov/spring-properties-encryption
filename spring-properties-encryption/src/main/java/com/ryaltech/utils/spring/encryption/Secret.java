@@ -18,9 +18,14 @@ import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.Collections;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.ryaltech.org.springframework.security.crypto.codec.Hex;
 import com.ryaltech.org.springframework.security.crypto.keygen.KeyGenerators;
 
@@ -66,6 +71,7 @@ class Secret {
 		}
 	}
 
+	
 	private final void read(ObjectInputStream ois) throws ClassNotFoundException, IOException {
 		salt = (char[]) ois.readObject();
 		password = (char[]) ois.readObject();
@@ -75,6 +81,14 @@ class Secret {
 	private static final long SLEEP_BETWEEN_LOCK_ATTEMPTS = 50;
 	private static final int LOCK_ATTEMPTS = 1000;
 
+	private static final Set<PosixFilePermission> keyPermissions = new HashSet<PosixFilePermission>() {		
+		private static final long serialVersionUID = 1L;
+
+		{
+			add(PosixFilePermission.OWNER_WRITE);
+			add(PosixFilePermission.OWNER_READ);
+		}
+	};
 	Secret(File keyFile, boolean createKeyIfNeeded) {		
 		if (createKeyIfNeeded) {
 
@@ -106,10 +120,9 @@ class Secret {
 								os.write(toBytes());
 								if (!FileSystems.getDefault().supportedFileAttributeViews().contains("posix")) {
 									logger.error("Failed to make " + keyFile.getName()
-											+ " readable only by owner(400). Please, make sure it is done manually.");
+											+ " readable and writable only by the owner(600). Please, make sure it is done manually.");
 								} else {
-									Files.setPosixFilePermissions(keyFile.toPath(),
-											Collections.singleton(PosixFilePermission.OWNER_READ));
+									Files.setPosixFilePermissions(keyFile.toPath(), keyPermissions);
 								}
 
 							} finally {
