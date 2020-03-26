@@ -20,6 +20,8 @@ servers:
 spring:
     profiles: prod
     password: ENC(e31a30cd5472f02db1b7f47d0b6c19d1ae37678eadc65c9bb979c000eaea1148)
+    numericpassword: ENC(xyz)
+    datepassword: ENC(yyy)
 name: prod-YAML
 environment: production
 servers:

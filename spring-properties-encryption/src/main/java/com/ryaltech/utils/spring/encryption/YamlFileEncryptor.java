@@ -9,6 +9,10 @@ import java.util.regex.Pattern;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 
 public class YamlFileEncryptor extends FileEncryptor {
 	private DumperOptions dumperOptions;
@@ -24,7 +28,19 @@ public class YamlFileEncryptor extends FileEncryptor {
 
 	@Override
 	public void encryptConfigFile(String fileName) {
-		Yaml yaml = new Yaml(dumperOptions);
+		Yaml yaml = new Yaml(new Constructor(), new Representer(), dumperOptions, new Resolver() {
+			@Override
+			protected void addImplicitResolvers() {
+				addImplicitResolver(Tag.MERGE, MERGE, "<");
+				addImplicitResolver(Tag.NULL, NULL, "~nN\0");
+				addImplicitResolver(Tag.NULL, EMPTY, null);
+				// The following implicit resolver is only for documentation
+				// purposes.
+				// It cannot work
+				// because plain scalars cannot start with '!', '&', or '*'.
+				addImplicitResolver(Tag.YAML, YAML, "!&*");
+			}
+		});
 		try {
 
 			List<Object> maps = new ArrayList<>();

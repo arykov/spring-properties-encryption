@@ -23,6 +23,8 @@ servers:
 spring:
     profiles: prod
     password: mypassword1
+    numericpassword: 123
+    datepassword: 2019-10-12
 name: prod-YAML
 environment: production
 servers: 
