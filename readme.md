@@ -6,7 +6,13 @@ This small library is created to simplify sensitive data encryption when writing
 ### Application
 This library is implemented as a set of aspects. In order to include it in your application execution, you need to use load time(preferred) or compile time weaving. AspectJ library is required to make it work.
 Example of using spring boot jar execution with load time weaving
+
+Linux: 
+``` java -javaagent:aspectjweaver-1.9.4.jar -classpath spring-properties-encryption-aspects-0.0.4.jar:sample-app-0.0.4.jar org.springframework.boot.loader.JarLauncher ```
+
+Windows:
 ``` java -javaagent:aspectjweaver-1.9.4.jar -classpath spring-properties-encryption-aspects-0.0.4.jar;sample-app-0.0.4.jar org.springframework.boot.loader.JarLauncher ```
+
 ### Encryption
 Unless [explicitly disabled](#disableencryption) encryption of sensitive values in all file based property sources is performed automatically on application load. 
 
